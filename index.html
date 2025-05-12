@@ -1,0 +1,447 @@
+<html lang="es">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Generador de Sonidos Avanzado</title>
+        <link rel="stylesheet" href="style.css">
+        <link rel="icon" href="data:image/svg+xml,&lt;svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22&gt;&lt;text y=%22.9em%22 font-size=%2290%22&gt;🔊&lt;/text&gt;&lt;/svg&gt;">
+    </head>
+    <body>
+        <div id="top-fixed-area">
+            <div id="oscilloscope-status-container">
+                <div id="statusHistory" class="status-display ms-dos-style"></div>
+                <canvas id="oscilloscope"></canvas>
+                <div id="statusMessage" class="status-display ms-dos-style" role="status" aria-live="polite">Pulsa 'Reproducir' para empezar</div>
+            </div>
+            <div class="actions">
+                <button id="playStopButton" title="Reproducir">
+                    <!-- ID CAMBIADO -->
+                    <span id="playStopIconContainer">
+                        <!-- CONTENEDOR PARA ICONO PLAY/STOP -->                        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-play">
+                            <polygon points="5 3 19 12 5 21 5 3"></polygon>
+                        </svg>
+                    </span>
+                    <span class="button-text" id="playStopButtonText">Reproducir</span>
+                    <!-- ID PARA TEXTO -->
+                </button>
+                <button id="randomButton" title="Aleatorio">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <rect x="3" y="3" width="18" height="18" rx="4" />
+        <circle cx="8" cy="8" r="1.5"/>
+        <circle cx="16" cy="8" r="1.5"/>
+        <circle cx="8" cy="16" r="1.5"/>
+        <circle cx="16" cy="16" r="1.5"/>
+    </svg>
+<span class="button-text">Aleatorio</span>
+                </button>
+                <button id="resetButton" title="Restaurar Valores Iniciales">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M21 12a9 9 0 1 1-3-6.7" />
+        <polyline points="21 3 21 9 15 9" />
+    </svg>
+<span class="button-text">Reset</span>
+                </button>
+                <button id="exportWavButton" title="Exportar WAV">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-download">
+                        <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                        <polyline points="7 10 12 15 17 10"></polyline>
+                        <line x1="12" x2="12" y1="15" y2="3"></line>
+                    </svg>
+<span class="button-text">Exportar</span>
+                </button>
+                <input type="file" id="presetInput" accept=".json" style="display:none;">
+                <button id="loadPresetButton" title="Cargar Preset">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-folder-open">
+                        <path d="m6 14 1.45-2.9A2 2 0 0 1 9.24 10H20a2 2 0 0 1 1.94 2.5l-1.55 6a2 2 0 0 1-1.94 1.5H4a2 2 0 0 1-2-2V5c0-1.1.9-2 2-2h3.93a2 2 0 0 1 1.66.9l.82 1.2a2 2 0 0 0 1.66.9H18a2 2 0 0 1 2 2v2"></path>
+                    </svg>
+<span class="button-text">Cargar</span>
+                </button>
+                <button id="savePresetButton" title="Guardar Preset">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-save">
+                        <path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"></path>
+                        <polyline points="17 21 17 13 7 13 7 21"></polyline>
+                        <polyline points="7 3 7 8 15 8"></polyline>
+                    </svg>
+<span class="button-text">Guardar</span>
+                </button>
+                <button id="themeToggleButton" title="Cambiar Tema">
+                    <span id="themeIconContainer">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-moon">
+                            <path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"></path>
+                        </svg>
+                    </span>
+                    <span class="button-text">Tema</span>
+                </button>
+            </div>
+        </div>
+        <div class="container">
+            <!-- Paneles -->
+            <div class="panel synth-panel">
+                <h2>Sintetizador</h2>
+                <div class="control-group" id="cg-frequency">
+                    <label for="frequency">
+                        Frecuencia:<span id="frequencyValue" class="value-display">440</span>Hz
+                    </label>
+                    <input type="range" id="frequency" name="frequency" min="20" max="20000" value="440" data-initial-value="440">
+                </div>
+                <div class="control-group" id="cg-duration">
+                    <label for="duration">
+                        Duración:<span id="durationValue" class="value-display">1</span>s
+                    </label>
+                    <input type="range" id="duration" name="duration" min="0.5" max="3" step="0.1" value="1" data-initial-value="1">
+                </div>
+                <div class="control-group" id="cg-volume">
+                    <label for="volume">
+                        Volumen:<span id="volumeValue" class="value-display">0</span>dB
+                    </label>
+                    <input type="range" id="volume" name="volume" min="-30" max="0" value="0" data-initial-value="0">
+                </div>
+                <div class="control-group">
+                    <label for="synthType">Tipo de Sintetizador</label>
+                    <select id="synthType" name="synthType" data-initial-value="synth">
+                        <option value="synth">Sintetizador Básico</option>
+                        <option value="fm">FM Synth</option>
+                        <option value="membrane">Membrane Synth</option>
+                    </select>
+                </div>
+                <div class="control-group">
+                    <label for="waveform">Forma de Onda</label>
+                    <select id="waveform" name="waveform" data-initial-value="sine">
+                        <option value="sine">Senoide</option>
+                        <option value="square">Cuadrada</option>
+                        <option value="triangle">Triangular</option>
+                        <option value="sawtooth">Sierra</option>
+                        <option value="pwm">PWM</option>
+                    </select>
+                </div>
+            </div>
+            <div class="panel filter-panel">
+                <h2>Filtro</h2>
+                <div class="control-group">
+                    <label for="filterType">Tipo de Filtro</label>
+                    <select id="filterType" name="filterType" data-initial-value="lowpass">
+                        <option value="lowpass">Paso Bajo</option>
+                        <option value="highpass">Paso Alto</option>
+                        <option value="bandpass">Paso Banda</option>
+                        <option value="notch">Notch</option>
+                        <option value="allpass">Allpass</option>
+                    </select>
+                </div>
+                <div class="control-group" id="cg-cutoff">
+                    <label for="cutoff">
+                        Corte:<span id="cutoffValue" class="value-display">1000</span>Hz
+                    </label>
+                    <input type="range" id="cutoff" name="cutoff" min="20" max="20000" value="1000" data-initial-value="1000">
+                </div>
+                <div class="control-group" id="cg-filterQ">
+                    <label for="filterQ">
+                        Resonancia (Q):<span id="filterQValue" class="value-display">1</span>
+                    </label>
+                    <input type="range" id="filterQ" name="filterQ" min="0.1" max="20" step="0.1" value="1" data-initial-value="1">
+                </div>
+            </div>
+            <div class="panel adsr-panel">
+                <h2>ADSR Envolvente</h2>
+                <div class="control-group" id="cg-attack">
+                    <label for="attack">
+                        Attack:<span id="attackValue" class="value-display">0.1</span>s
+                    </label>
+                    <input type="range" id="attack" name="attack" min="0" max="2" step="0.01" value="0.1" data-initial-value="0.1">
+                </div>
+                <div class="control-group" id="cg-decay">
+                    <label for="decay">
+                        Decay:<span id="decayValue" class="value-display">0.2</span>s
+                    </label>
+                    <input type="range" id="decay" name="decay" min="0" max="2" step="0.01" value="0.2" data-initial-value="0.2">
+                </div>
+                <div class="control-group" id="cg-sustain">
+                    <label for="sustain">
+                        Sustain:<span id="sustainValue" class="value-display">0.5</span>
+                    </label>
+                    <input type="range" id="sustain" name="sustain" min="0" max="1" step="0.01" value="0.5" data-initial-value="0.5">
+                </div>
+                <div class="control-group" id="cg-release">
+                    <label for="release">
+                        Release:<span id="releaseValue" class="value-display">1</span>s
+                    </label>
+                    <input type="range" id="release" name="release" min="0" max="3" step="0.01" value="1" data-initial-value="1">
+                </div>
+            </div>
+            <div class="panel eq-panel" id="eq1PanelContainer">
+                <h2>EQ1 (3-Bandas)</h2>
+                <div class="control-group activation-switch">
+                    <label for="eq1EnabledToggle">Activar EQ1</label>
+                    <div class="switch-container">
+                        <input type="checkbox" id="eq1EnabledToggle" class="toggle-checkbox" data-target-select="eq1Enabled" data-initial-checked="false">
+                        <label class="switch" for="eq1EnabledToggle"></label>
+                    </div>
+                    <select id="eq1Enabled" name="eq1Enabled" class="hidden-select" data-initial-value="0">
+                        <option value="1">Sí</option>
+                        <option value="0" selected>No</option>
+                    </select>
+                </div>
+                <div class="eq-group" id="eq1-low-group">
+                    <span class="group-title">Bajos</span>
+                    <div class="control-group" id="cg-eq1LowFreq">
+                        <label for="eq1LowFreq">
+                            Frecuencia:<span id="eq1LowFreqValue" class="value-display">100</span>Hz
+                        </label>
+                        <input type="range" id="eq1LowFreq" name="eq1LowFreq" min="20" max="500" value="100" data-initial-value="100" disabled>
+                    </div>
+                    <div class="control-group" id="cg-eq1LowGain">
+                        <label for="eq1LowGain">
+                            Ganancia:<span id="eq1LowGainValue" class="value-display">0</span>dB
+                        </label>
+                        <input type="range" id="eq1LowGain" name="eq1LowGain" min="-12" max="12" value="0" data-initial-value="0" disabled>
+                    </div>
+                </div>
+                <div class="eq-group" id="eq1-mid-group">
+                    <span class="group-title">Medios</span>
+                    <div class="control-group" id="cg-eq1MidFreq">
+                        <label for="eq1MidFreq">
+                            Frecuencia (Centro):<span id="eq1MidFreqValue" class="value-display">1000</span>Hz
+                        </label>
+                        <input type="range" id="eq1MidFreq" name="eq1MidFreq" min="200" max="5000" value="1000" data-initial-value="1000" disabled>
+                    </div>
+                    <div class="control-group" id="cg-eq1MidGain">
+                        <label for="eq1MidGain">
+                            Ganancia:<span id="eq1MidGainValue" class="value-display">0</span>dB
+                        </label>
+                        <input type="range" id="eq1MidGain" name="eq1MidGain" min="-12" max="12" value="0" data-initial-value="0" disabled>
+                    </div>
+                </div>
+                <div class="eq-group" id="eq1-high-group">
+                    <span class="group-title">Agudos</span>
+                    <div class="control-group" id="cg-eq1HighFreq">
+                        <label for="eq1HighFreq">
+                            Frecuencia:<span id="eq1HighFreqValue" class="value-display">8000</span>Hz
+                        </label>
+                        <input type="range" id="eq1HighFreq" name="eq1HighFreq" min="1000" max="20000" value="8000" data-initial-value="8000" disabled>
+                    </div>
+                    <div class="control-group" id="cg-eq1HighGain">
+                        <label for="eq1HighGain">
+                            Ganancia:<span id="eq1HighGainValue" class="value-display">0</span>dB
+                        </label>
+                        <input type="range" id="eq1HighGain" name="eq1HighGain" min="-12" max="12" value="0" data-initial-value="0" disabled>
+                    </div>
+                </div>
+            </div>
+            <div class="panel eq-panel" id="eq2PanelContainer">
+                <h2>EQ2 (Ajuste Fino - Peaking)</h2>
+                <div class="control-group activation-switch">
+                    <label for="eq2EnabledToggle">Activar EQ2</label>
+                    <div class="switch-container">
+                        <input type="checkbox" id="eq2EnabledToggle" class="toggle-checkbox" data-target-select="eq2Enabled" data-initial-checked="false">
+                        <label class="switch" for="eq2EnabledToggle"></label>
+                    </div>
+                    <select id="eq2Enabled" name="eq2Enabled" class="hidden-select" data-initial-value="0">
+                        <option value="1">Sí</option>
+                        <option value="0" selected>No</option>
+                    </select>
+                </div>
+                <div class="eq-group" id="eq2-params-group">
+                    <div class="control-group" id="cg-eq2Freq">
+                        <label for="eq2Freq">
+                            Frecuencia:<span id="eq2FreqValue" class="value-display">1000</span>Hz
+                        </label>
+                        <input type="range" id="eq2Freq" name="eq2Freq" min="20" max="20000" value="1000" data-initial-value="1000" disabled>
+                    </div>
+                    <div class="control-group" id="cg-eq2Gain">
+                        <label for="eq2Gain">
+                            Ganancia:<span id="eq2GainValue" class="value-display">0</span>dB
+                        </label>
+                        <input type="range" id="eq2Gain" name="eq2Gain" min="-12" max="12" value="0" data-initial-value="0" disabled>
+                    </div>
+                    <div class="control-group" id="cg-eq2Q">
+                        <label for="eq2Q">
+                            Ancho (Q):<span id="eq2QValue" class="value-display">1</span>
+                        </label>
+                        <input type="range" id="eq2Q" name="eq2Q" min="0.1" max="20" step="0.1" value="1" data-initial-value="1" disabled>
+                    </div>
+                </div>
+            </div>
+            <div class="panel effects-panel">
+                <h2>Efectos Modulares</h2>
+                <div class="effect-subgroup" id="effectReverbPanel">
+                    <div class="effect-title-toggle">
+                        <span class="group-title">Reverb</span>
+                        <div class="control-group activation-switch">
+                            <label for="reverbEnabledToggle" class="sr-only">Activar Reverb</label>
+                            <div class="switch-container">
+                                <input type="checkbox" id="reverbEnabledToggle" class="toggle-checkbox" data-target-select="reverbEnabled" data-initial-checked="false">
+                                <label class="switch" for="reverbEnabledToggle"></label>
+                            </div>
+                            <select id="reverbEnabled" name="reverbEnabled" class="hidden-select" data-initial-value="0">
+                                <option value="1">Encendido</option>
+                                <option value="0" selected>Apagado</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="control-group" id="cg-reverbWet">
+                        <label for="reverbWet">
+                            Mezcla (Wet):<span id="reverbWetValue" class="value-display">0.7</span>
+                        </label>
+                        <input type="range" id="reverbWet" name="reverbWet" min="0" max="1" step="0.01" value="0.7" data-initial-value="0.7" disabled>
+                    </div>
+                </div>
+                <hr class="effect-separator">
+                <div class="effect-subgroup" id="effectDelayPanel">
+                    <div class="effect-title-toggle">
+                        <span class="group-title">Delay (PingPong)</span>
+                        <div class="control-group activation-switch">
+                            <label for="delayEnabledToggle" class="sr-only">Activar Delay</label>
+                            <div class="switch-container">
+                                <input type="checkbox" id="delayEnabledToggle" class="toggle-checkbox" data-target-select="delayEnabled" data-initial-checked="false">
+                                <label class="switch" for="delayEnabledToggle"></label>
+                            </div>
+                            <select id="delayEnabled" name="delayEnabled" class="hidden-select" data-initial-value="0">
+                                <option value="1">Encendido</option>
+                                <option value="0" selected>Apagado</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="control-group" id="cg-delayWet">
+                        <label for="delayWet">
+                            Mezcla (Wet):<span id="delayWetValue" class="value-display">0.5</span>
+                        </label>
+                        <input type="range" id="delayWet" name="delayWet" min="0" max="1" step="0.01" value="0.5" data-initial-value="0.5" disabled>
+                    </div>
+                    <div class="control-group" id="cg-delayTime">
+                        <label for="delayTime">
+                            Tiempo:<span id="delayTimeValue" class="value-display">4n</span>
+                        </label>
+                        <select id="delayTime" name="delayTime" data-initial-value="4n" disabled>
+                            <option value="8n">8n</option>
+                            <option value="4n" selected>4n</option>
+                            <option value="2n">2n</option>
+                            <option value="1n">1n</option>
+                            <option value="8t">8t</option>
+                            <option value="16n">16n</option>
+                        </select>
+                    </div>
+                    <div class="control-group" id="cg-delayFeedback">
+                        <label for="delayFeedback">
+                            Feedback:<span id="delayFeedbackValue" class="value-display">0.2</span>
+                        </label>
+                        <input type="range" id="delayFeedback" name="delayFeedback" min="0" max="0.9" step="0.01" value="0.2" data-initial-value="0.2" disabled>
+                    </div>
+                </div>
+                <hr class="effect-separator">
+                <div class="control-group" id="cg-detune">
+                    <label for="detune">
+                        Desafinación:<span id="detuneValue" class="value-display">0</span>c
+                    </label>
+                    <input type="range" id="detune" name="detune" min="-100" max="100" value="0" data-initial-value="0">
+                </div>
+                <hr class="effect-separator">
+                <div class="control-group" id="cg-vibratoFreq">
+                    <label for="vibratoFreq">
+                        Vibrato (Frecuencia):<span id="vibratoFreqValue" class="value-display">5</span>Hz
+                    </label>
+                    <input type="range" id="vibratoFreq" name="vibratoFreq" min="0.1" max="20" step="0.1" value="5" data-initial-value="5">
+                </div>
+                <div class="control-group" id="cg-vibratoDepth">
+                    <label for="vibratoDepth">
+                        Vibrato (Profundidad):<span id="vibratoDepthValue" class="value-display">0.5</span>
+                    </label>
+                    <input type="range" id="vibratoDepth" name="vibratoDepth" min="0" max="1" step="0.01" value="0.5" data-initial-value="0.5">
+                </div>
+                <hr class="effect-separator">
+                <div class="effect-subgroup" id="effectChorusPanel">
+                    <div class="effect-title-toggle">
+                        <span class="group-title">Chorus</span>
+                        <div class="control-group activation-switch">
+                            <label for="chorusEnabledToggle" class="sr-only">Activar Chorus</label>
+                            <div class="switch-container">
+                                <input type="checkbox" id="chorusEnabledToggle" class="toggle-checkbox" data-target-select="chorusEnabled" data-initial-checked="false">
+                                <label class="switch" for="chorusEnabledToggle"></label>
+                            </div>
+                            <select id="chorusEnabled" name="chorusEnabled" class="hidden-select" data-initial-value="0">
+                                <option value="1">Encendido</option>
+                                <option value="0" selected>Apagado</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="control-group" id="cg-chorusFreq">
+                        <label for="chorusFreq">
+                            Frecuencia:<span id="chorusFreqValue" class="value-display">1.5</span>Hz
+                        </label>
+                        <input type="range" id="chorusFreq" name="chorusFreq" min="0.1" max="10" step="0.1" value="1.5" data-initial-value="1.5" disabled>
+                    </div>
+                    <div class="control-group" id="cg-chorusDelay">
+                        <label for="chorusDelay">
+                            Delay Time:<span id="chorusDelayValue" class="value-display">3.5</span>ms
+                        </label>
+                        <input type="range" id="chorusDelay" name="chorusDelay" min="1" max="10" step="0.1" value="3.5" data-initial-value="3.5" disabled>
+                    </div>
+                    <div class="control-group" id="cg-chorusDepth">
+                        <label for="chorusDepth">
+                            Profundidad:<span id="chorusDepthValue" class="value-display">0.7</span>
+                        </label>
+                        <input type="range" id="chorusDepth" name="chorusDepth" min="0" max="1" step="0.01" value="0.7" data-initial-value="0.7" disabled>
+                    </div>
+                </div>
+                <hr class="effect-separator">
+                <div class="effect-subgroup" id="effectDistortionPanel">
+                    <div class="effect-title-toggle">
+                        <span class="group-title">Distorsión</span>
+                        <div class="control-group activation-switch">
+                            <label for="distortionEnabledToggle" class="sr-only">Activar Distorsión</label>
+                            <div class="switch-container">
+                                <input type="checkbox" id="distortionEnabledToggle" class="toggle-checkbox" data-target-select="distortionEnabled" data-initial-checked="false">
+                                <label class="switch" for="distortionEnabledToggle"></label>
+                            </div>
+                            <select id="distortionEnabled" name="distortionEnabled" class="hidden-select" data-initial-value="0">
+                                <option value="1">Encendido</option>
+                                <option value="0" selected>Apagado</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="control-group" id="cg-distortionLevel">
+                        <label for="distortionLevel">
+                            Nivel:<span id="distortionLevelValue" class="value-display">0.5</span>
+                        </label>
+                        <input type="range" id="distortionLevel" name="distortionLevel" min="0" max="1" step="0.01" value="0.5" data-initial-value="0.5" disabled>
+                    </div>
+                </div>
+                <hr class="effect-separator">
+                <div class="effect-subgroup" id="effectPhaserPanel">
+                    <div class="effect-title-toggle">
+                        <span class="group-title">Phaser</span>
+                        <div class="control-group activation-switch">
+                            <label for="phaserEnabledToggle" class="sr-only">Activar Phaser</label>
+                            <div class="switch-container">
+                                <input type="checkbox" id="phaserEnabledToggle" class="toggle-checkbox" data-target-select="phaserEnabled" data-initial-checked="false">
+                                <label class="switch" for="phaserEnabledToggle"></label>
+                            </div>
+                            <select id="phaserEnabled" name="phaserEnabled" class="hidden-select" data-initial-value="0">
+                                <option value="1">Encendido</option>
+                                <option value="0" selected>Apagado</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="control-group" id="cg-phaserFreq">
+                        <label for="phaserFreq">
+                            Frecuencia:<span id="phaserFreqValue" class="value-display">0.5</span>Hz
+                        </label>
+                        <input type="range" id="phaserFreq" name="phaserFreq" min="0.01" max="10" step="0.01" value="0.5" data-initial-value="0.5" disabled>
+                    </div>
+                    <div class="control-group" id="cg-phaserOctaves">
+                        <label for="phaserOctaves">
+                            Octavas:<span id="phaserOctavesValue" class="value-display">3</span>
+                        </label>
+                        <input type="range" id="phaserOctaves" name="phaserOctaves" min="1" max="6" step="1" value="3" data-initial-value="3" disabled>
+                    </div>
+                    <div class="control-group" id="cg-phaserStages">
+                        <label for="phaserStages">
+                            Etapas:<span id="phaserStagesValue" class="value-display">10</span>
+                        </label>
+                        <input type="range" id="phaserStages" name="phaserStages" min="2" max="20" step="1" value="10" data-initial-value="10" disabled>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <script src="https://unpkg.com/tone@14.7.77/build/Tone.js"></script>
+        <script src="main.js"></script>
+    </body>
+</html>
