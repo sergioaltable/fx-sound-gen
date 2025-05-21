@@ -1,0 +1,168 @@
+[
+  {
+    "name": "🎹 Piano Eléctrico Suave",
+    "settings": {
+      "frequency": 261.63, "duration": 1.5, "volume": -6,
+      "synthType": "fm", "waveform": "sine",
+      "filterType": "lowpass", "cutoff": 5000, "filterQ": 1.2,
+      "attack": 0.02, "decay": 0.8, "sustain": 0.4, "release": 1.2,
+      "eq1Enabled": "0", "eq1LowFreq": 100, "eq1LowGain": 0, "eq1MidFreq": 1000, "eq1MidGain": -3, "eq1HighFreq": 8000, "eq1HighGain": -2,
+      "eq2Enabled": "0", "eq2Freq": 1000, "eq2Gain": 0, "eq2Q": 1,
+      "reverbEnabled": "1", "reverbWet": 0.35,
+      "delayEnabled": "0", "delayWet": 0.5, "delayTime": "8n", "delayFeedback": 0.2,
+      "detune": 0,
+      "vibratoFreq": 4, "vibratoDepth": 0.1,
+      "chorusEnabled": "1", "chorusFreq": 1.2, "chorusDelay": 4.0, "chorusDepth": 0.5,
+      "distortionEnabled": "0", "distortionLevel": 0.5,
+      "phaserEnabled": "0", "phaserFreq": 0.5, "phaserOctaves": 3, "phaserStages": 10
+    }
+  },
+  {
+    "name": "👽 Theremin Fantasma",
+    "settings": {
+      "frequency": 660, "duration": 2.5, "volume": -8,
+      "synthType": "synth", "waveform": "sine",
+      "filterType": "lowpass", "cutoff": 8000, "filterQ": 0.8,
+      "attack": 0.5, "decay": 0.8, "sustain": 0.9, "release": 2.0,
+      "eq1Enabled": "1", "eq1LowFreq": 200, "eq1LowGain": -5, "eq1MidFreq": 1500, "eq1MidGain": 4, "eq1HighFreq": 7000, "eq1HighGain": 2,
+      "eq2Enabled": "0", "eq2Freq": 1000, "eq2Gain": 0, "eq2Q": 1,
+      "reverbEnabled": "1", "reverbWet": 0.8,
+      "delayEnabled": "1", "delayWet": 0.4, "delayTime": "4n", "delayFeedback": 0.4,
+      "detune": 5,
+      "vibratoFreq": 6, "vibratoDepth": 0.4,
+      "chorusEnabled": "0", "chorusFreq": 1.5, "chorusDelay": 3.5, "chorusDepth": 0.7,
+      "distortionEnabled": "0", "distortionLevel": 0.5,
+      "phaserEnabled": "1", "phaserFreq": 0.3, "phaserOctaves": 4, "phaserStages": 8
+    }
+  },
+  {
+    "name": "💾 Chip Tune Básico",
+    "settings": {
+      "frequency": 880, "duration": 0.8, "volume": -3,
+      "synthType": "synth", "waveform": "pwm",
+      "filterType": "lowpass", "cutoff": 6000, "filterQ": 1,
+      "attack": 0.01, "decay": 0.15, "sustain": 0.5, "release": 0.3,
+      "eq1Enabled": "0", "eq1LowFreq": 100, "eq1LowGain": 0, "eq1MidFreq": 1000, "eq1MidGain": 0, "eq1HighFreq": 8000, "eq1HighGain": 0,
+      "eq2Enabled": "0", "eq2Freq": 1000, "eq2Gain": 0, "eq2Q": 1,
+      "reverbEnabled": "0", "reverbWet": 0.7,
+      "delayEnabled": "0", "delayWet": 0.5, "delayTime": "4n", "delayFeedback": 0.2,
+      "detune": 0,
+      "vibratoFreq": 15, "vibratoDepth": 0.05,
+      "chorusEnabled": "0", "chorusFreq": 1.5, "chorusDelay": 3.5, "chorusDepth": 0.7,
+      "distortionEnabled": "0", "distortionLevel": 0.5,
+      "phaserEnabled": "0", "phaserFreq": 0.5, "phaserOctaves": 3, "phaserStages": 10
+    }
+  },
+   {
+    "name": "🥁 Bombo Simple",
+    "settings": {
+      "frequency": 60, "duration": 0.5, "volume": 0,
+      "synthType": "membrane", "waveform": "sine",
+      "filterType": "lowpass", "cutoff": 400, "filterQ": 1,
+      "attack": 0.01, "decay": 0.4, "sustain": 0.01, "release": 0.4,
+      "eq1Enabled": "1", "eq1LowFreq": 80, "eq1LowGain": 4, "eq1MidFreq": 500, "eq1MidGain": -6, "eq1HighFreq": 5000, "eq1HighGain": -10,
+      "eq2Enabled": "0", "eq2Freq": 1000, "eq2Gain": 0, "eq2Q": 1,
+      "reverbEnabled": "0", "reverbWet": 0.7,
+      "delayEnabled": "0", "delayWet": 0.5, "delayTime": "4n", "delayFeedback": 0.2,
+      "detune": 0,
+      "vibratoFreq": 5, "vibratoDepth": 0,
+      "chorusEnabled": "0", "chorusFreq": 1.5, "chorusDelay": 3.5, "chorusDepth": 0.7,
+      "distortionEnabled": "0", "distortionLevel": 0.5,
+      "phaserEnabled": "0", "phaserFreq": 0.5, "phaserOctaves": 3, "phaserStages": 10
+    }
+  },
+  {
+    "name": "⚡ Plomo Distorsionado",
+    "settings": {
+      "frequency": 440, "duration": 1.0, "volume": -4,
+      "synthType": "synth", "waveform": "sawtooth",
+      "filterType": "lowpass", "cutoff": 2500, "filterQ": 2.5,
+      "attack": 0.05, "decay": 0.2, "sustain": 0.8, "release": 0.6,
+      "eq1Enabled": "1", "eq1LowFreq": 150, "eq1LowGain": -2, "eq1MidFreq": 1200, "eq1MidGain": 6, "eq1HighFreq": 6000, "eq1HighGain": 4,
+      "eq2Enabled": "0", "eq2Freq": 1000, "eq2Gain": 0, "eq2Q": 1,
+      "reverbEnabled": "1", "reverbWet": 0.2,
+      "delayEnabled": "1", "delayWet": 0.3, "delayTime": "8t", "delayFeedback": 0.35,
+      "detune": 0,
+      "vibratoFreq": 5, "vibratoDepth": 0.15,
+      "chorusEnabled": "0", "chorusFreq": 1.5, "chorusDelay": 3.5, "chorusDepth": 0.7,
+      "distortionEnabled": "1", "distortionLevel": 0.65,
+      "phaserEnabled": "0", "phaserFreq": 0.5, "phaserOctaves": 3, "phaserStages": 10
+    }
+  },
+
+  {
+    "name": "🌌 Vast Ambient Pad",
+    "settings": {
+      "frequency": 220, "duration": 3.0, "volume": -10,
+      "synthType": "synth", "waveform": "sawtooth",
+      "filterType": "lowpass", "cutoff": 1800, "filterQ": 0.8,
+      "attack": 0.9, "decay": 1.2, "sustain": 0.7, "release": 2.5,
+      "eq2Enabled": "0", "eq2Freq": 1000, "eq2Gain": 0, "eq2Q": 1,
+      "reverbEnabled": "1", "reverbWet": 0.65,
+      "delayEnabled": "1", "delayWet": 0.3, "delayTime": "2n", "delayFeedback": 0.4,
+      "detune": 3,
+      "vibratoFreq": 4, "vibratoDepth": 0.05,
+      "chorusEnabled": "1", "chorusFreq": 1.0, "chorusDelay": 5.5, "chorusDepth": 0.6,
+      "phaserEnabled": "0", "phaserFreq": 0.5, "phaserOctaves": 3, "phaserStages": 10
+    }
+  },
+  {
+    "name": "💥 Punchy Square Bass",
+    "settings": {
+      "frequency": 82.41, "duration": 0.6, "volume": -2,
+      "synthType": "synth", "waveform": "square",
+      "eq1Enabled": "1", "eq1LowFreq": 90, "eq1LowGain": 4, "eq1MidFreq": 600, "eq1MidGain": -5, "eq1HighFreq": 3000, "eq1HighGain": -8,
+      "reverbEnabled": "0", "reverbWet": 0.7,
+      "delayEnabled": "0", "delayWet": 0.5, "delayTime": "4n", "delayFeedback": 0.2,
+      "detune": 0,
+      "vibratoFreq": 5, "vibratoDepth": 0,
+      "chorusEnabled": "0", "chorusFreq": 1.5, "chorusDelay": 3.5, "chorusDepth": 0.7,
+      "distortionEnabled": "0", "distortionLevel": 0.1
+    }
+  },
+  {
+    "name": "🔔 Crystal FM Bell",
+    "settings": {
+      "frequency": 880, "duration": 1.8, "volume": -7,
+      "synthType": "fm", "waveform": "sine",
+      "attack": 0.01, "decay": 0.7, "sustain": 0.1, "release": 1.0,
+      "eq1Enabled": "0", "eq1LowFreq": 100, "eq1LowGain": 0, "eq1MidFreq": 1000, "eq1MidGain": 0, "eq1HighFreq": 8000, "eq1HighGain": 0,
+      "eq2Enabled": "1", "eq2Freq": 3500, "eq2Gain": 4, "eq2Q": 2.0,
+      "delayEnabled": "0", "delayWet": 0.5, "delayTime": "4n", "delayFeedback": 0.2,
+      "phaserEnabled": "0", "phaserFreq": 0.5, "phaserOctaves": 3, "phaserStages": 10
+    }
+  },
+  {
+    "name": "🥁 Snare-ish Hit",
+    "settings": {
+      "frequency": 280, "duration": 0.5, "volume": -4,
+      "synthType": "membrane", "waveform": "sine",
+      "filterType": "highpass", "cutoff": 1200, "filterQ": 2.5,
+      "attack": 0.005, "decay": 0.12, "sustain": 0.0, "release": 0.15,
+      "eq1Enabled": "1", "eq1LowFreq": 150, "eq1LowGain": -10, "eq1MidFreq": 800, "eq1MidGain": -2, "eq1HighFreq": 6000, "eq1HighGain": 5,
+      "reverbEnabled": "0", "reverbWet": 0.1,
+      "detune": 0,
+      "vibratoFreq": 5, "vibratoDepth": 0,
+      "chorusEnabled": "0", "chorusFreq": 1.5, "chorusDelay": 3.5, "chorusDepth": 0.7,
+      "distortionEnabled": "0", "distortionLevel": 0.05
+    }
+  },
+    {
+        "name": "🤖 Robot Talk (FX)",
+        "settings": {
+          "frequency": 300, "duration": 1.5, "volume": -6,
+          "synthType": "synth", "waveform": "square",
+          "filterType": "bandpass", "cutoff": 1200, "filterQ": 8, 
+          "attack": 0.02, "decay": 0.1, "sustain": 0.8, "release": 0.2,
+          "eq1Enabled": "0", "eq1LowFreq": 100, "eq1LowGain": 0, "eq1MidFreq": 1000, "eq1MidGain": 0, "eq1HighFreq": 8000, "eq1HighGain": 0,
+          "eq2Enabled": "0", "eq2Freq": 1000, "eq2Gain": 0, "eq2Q": 1,
+          "reverbEnabled": "0", "reverbWet": 0.7,
+          "delayEnabled": "0", "delayWet": 0.5, "delayTime": "4n", "delayFeedback": 0.2,
+          "detune": 0,
+          "vibratoFreq": 18, "vibratoDepth": 0.6, 
+          "chorusEnabled": "0", "chorusFreq": 1.5, "chorusDelay": 3.5, "chorusDepth": 0.7,
+          "distortionEnabled": "1", "distortionLevel": 0.2, 
+          "phaserEnabled": "0", "phaserFreq": 0.5, "phaserOctaves": 3, "phaserStages": 10
+        }
+      }
+]

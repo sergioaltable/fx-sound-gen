@@ -31,6 +31,7 @@
   --msdos-text-shadow: 0 0 5px var(--msdos-text);
   --primary-color-rgb: 32, 201, 151; /* RGB for #20c997 */
   --secondary-color-rgb: 111, 66, 193; /* RGB for #6f42c1 */
+  --primary-color-translucent: rgba(32, 201, 151, 0.25); /* Added for focus */
 }
 
 body.light-theme {
@@ -63,6 +64,7 @@ body.light-theme {
   --msdos-text-shadow: 0 0 5px var(--msdos-text);
   --primary-color-rgb: 0, 123, 255;     /* RGB for #007bff */
   --secondary-color-rgb: 88, 80, 236;   /* RGB for #5850ec */
+  --primary-color-translucent: rgba(0, 123, 255, 0.25); /* Added for focus */
 }
 
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
@@ -95,7 +97,7 @@ body {
   z-index: 1000;
   display: flex;
   flex-direction: column;
-  gap: 10px; /* Reducido el gap general */
+  gap: 10px;
   box-sizing: border-box;
 }
 
@@ -107,42 +109,36 @@ body {
   justify-content: center;
 }
 
-/* Keyframes for the pulsing glow effect */
 @keyframes oscilloscopePulse {
   0%, 100% {
     border-color: var(--primary-color);
-    /* Subtle glow */
     box-shadow: 0 0 6px 1px rgba(var(--primary-color-rgb), 0.6);
   }
   50% {
-    border-color: var(--secondary-color); /* Slightly change border color */
-    /* Brighter/Wider glow */
+    border-color: var(--secondary-color);
     box-shadow: 0 0 12px 3px rgba(var(--primary-color-rgb), 0.8);
   }
 }
 
 #oscilloscope {
   display: block;
-  flex-grow: 0.8;  /* Menos propenso a crecer que los mensajes */
-  flex-shrink: 1; /* Puede encogerse si es necesario */
-  flex-basis: 150px;/* Ancho base más pequeño */
+  flex-grow: 0.8;
+  flex-shrink: 1;
+  flex-basis: 150px;
   min-width: 600px;
-  max-width: 800px; /* Límite para que no sea demasiado grande */
+  max-width: 800px;
   height: 80px;
   border: 1px solid var(--border-color);
   background: var(--oscilloscope-bg);
   border-radius: 8px;
-  /* Make transitions smooth, include box-shadow */
   transition: background-color 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
-  box-shadow: none; /* Ensure no default shadow interferes */
+  box-shadow: none;
   order: 2;
 }
 
-/* Style when the oscilloscope is active/playing */
 #oscilloscope.active {
-  animation: oscilloscopePulse 1.2s ease-in-out infinite; /* Apply the animation */
-  /* Ensure transitions don't conflict heavily with animation */
-  transition: background-color 0.3s ease; /* Remove border/shadow from transition when active */
+  animation: oscilloscopePulse 1.2s ease-in-out infinite;
+  transition: background-color 0.3s ease;
 }
 
 
@@ -151,6 +147,7 @@ body {
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
+  align-items: center; /* Vertically align items */
   gap: 8px;
   margin-top: 8px;
 }
@@ -169,9 +166,10 @@ body {
   align-items: center;
   gap: 8px;
   box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  height: 40px; /* Explicit height for alignment */
+  box-sizing: border-box;
 }
 .actions button:hover {
-  /* background-color: var(--secondary-color); << Se manejará por botón específico */
   transform: translateY(-2px);
   box-shadow: 0 4px 8px rgba(0,0,0,0.15);
 }
@@ -180,14 +178,13 @@ body {
   box-shadow: 0 1px 2px rgba(0,0,0,0.1);
 }
 
-/* Estilos para el botón Play/Stop */
 #playStopButton.playing {
-  background-color: var(--warning-color); /* Rojo/Naranja para Stop */
+  background-color: var(--warning-color);
 }
 #playStopButton.playing:hover {
-  background-color: var(--secondary-color); /* O un rojo más oscuro */
+  background-color: var(--secondary-color);
 }
-#playStopButton:not(.playing) { /* Estilo normal de Play */
+#playStopButton:not(.playing) {
     background-color: var(--primary-color);
 }
 #playStopButton:not(.playing):hover {
@@ -202,7 +199,7 @@ body {
   background-color: var(--primary-color);
 }
 .actions button#resetButton {
-  background-color: var(--secondary-color); /* Color distintivo para Reset */
+  background-color: var(--secondary-color);
 }
 .actions button#resetButton:hover {
   background-color: var(--primary-color);
@@ -233,11 +230,9 @@ body {
   white-space: pre-wrap;
   text-align: left;
   display: flex;
-  /* flex-direction: column;  Se ajusta abajo */
-  /* justify-content: flex-start; */
-  flex-grow: 1; /* Permite que los mensajes ocupen más espacio */
-  flex-basis: 200px; /* Un poco menos de base, pero crecerá */
-  flex-shrink: 0.5; /* Puede encogerse un poco más que el osciloscopio */
+  flex-grow: 1;
+  flex-basis: 200px;
+  flex-shrink: 0.5;
 }
 
 
@@ -246,25 +241,26 @@ body {
   order: 3;
   flex-direction: column;
   justify-content: flex-start;
+  align-items: flex-start; /* Align blinking cursor left */
 }
 
 #statusMessage::after {
   content: '_';
   animation: blink-caret 1s step-end infinite;
   font-weight: bold;
-  align-self: flex-start;
+  /* align-self: flex-start; /* Already set on parent */
 }
 
 #statusHistory {
   font-size: 0.85rem;
   line-height: 1.3;
   order: 1;
-  display: flex; /* Para que el scroll funcione bien con flex-direction */
-  flex-direction: column-reverse; /* Mensajes nuevos abajo, viejos arriba y se desbordan por arriba */
+  display: flex;
+  flex-direction: column-reverse;
 }
 
 #statusHistory div {
-  margin-top: 2px; /* Espacio entre mensajes del historial */
+  margin-top: 2px;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -441,7 +437,8 @@ select {
   background-repeat: no-repeat;
   background-position: right 12px center;
   background-size: .65em auto;
-  padding-right: 30px;
+  padding-right: 30px; /* Make space for arrow */
+  box-sizing: border-box; /* Include padding in width/height */
 }
 body.light-theme select {
     background-image: url('data:image/svg+xml;charset=US-ASCII,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22292.4%22%20height%3D%22292.4%22%3E%3Cpath%20fill%3D%22%23212529%22%20d%3D%22M287%2069.4a17.6%2017.6%200%200%200-13-5.4H18.4c-5%200-9.3%201.8-12.9%205.4A17.6%2017.6%200%200%200%200%2082.2c0%205%201.8%209.3%205.4%2012.9l128%20127.9c3.6%203.6%207.8%205.4%2012.8%205.4s9.2-1.8%2012.8-5.4L287%2095c3.5-3.5%205.4-7.8%205.4-12.8%200-5-1.9-9.4-5.4-13z%22%2F%3E%3C%2Fsvg%3E');
@@ -452,11 +449,9 @@ select:hover {
 select:focus {
   outline: none;
   border-color: var(--primary-color);
-  box-shadow: 0 0 0 3px var(--primary-color-translucent, rgba(32, 201, 151, 0.25));
+  box-shadow: 0 0 0 3px var(--primary-color-translucent);
 }
-body.light-theme select:focus {
-  box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.25);
-}
+
 
 .activation-switch {
   display: flex;
@@ -544,7 +539,7 @@ body.light-theme select:focus {
   margin-top: 10px;
   transition: background-color 0.3s ease, border-color 0.3s ease, opacity 0.3s ease;
 }
-.eq-group > .group-title, .effect-subgroup > .group-title {
+.eq-group > .group-title { /* Removed .effect-subgroup > .group-title here */
   font-weight: 600;
   font-size: 0.95rem;
   color: var(--secondary-color);
@@ -562,8 +557,9 @@ body.light-theme select:focus {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-bottom: 10px;
+    margin-bottom: 10px; /* Reduced */
 }
+/* Style for subgroup title within the toggle */
 .effects-panel .effect-title-toggle .group-title {
     margin-bottom: 0;
     border-bottom: none;
@@ -573,6 +569,7 @@ body.light-theme select:focus {
     font-size: 0.95rem;
     font-weight: 600;
 }
+/* Ensure activation switch inside title toggle has no extra margin */
 .effects-panel .effect-title-toggle .activation-switch {
     margin-bottom: 0;
 }
@@ -591,21 +588,28 @@ input:disabled, select:disabled {
   border-color: var(--input-border) !important;
   color: var(--disabled-text-color) !important;
 }
+/* Ensure disabled selects don't show custom arrow */
+select:disabled {
+    background-image: none !important;
+}
 input[type="range"]:disabled::-webkit-slider-thumb {
   background: var(--disabled-text-color) !important;
   border-color: var(--panel-bg) !important;
   opacity: var(--disabled-opacity);
+  cursor: not-allowed !important;
 }
 input[type="range"]:disabled::-moz-range-thumb {
   background: var(--disabled-text-color) !important;
   border-color: var(--panel-bg) !important;
   opacity: var(--disabled-opacity);
+  cursor: not-allowed !important;
 }
 
 .control-group.control-disabled > label,
 .control-group.control-disabled > label > span.value-display {
   color: var(--disabled-text-color) !important;
   opacity: var(--disabled-opacity);
+  cursor: not-allowed !important; /* Add cursor */
 }
 .control-group.control-disabled > label > span.value-display {
   background-color: var(--input-border) !important;
@@ -615,18 +619,35 @@ input[type="range"]:disabled::-moz-range-thumb {
 .eq-group.group-disabled,
 .effect-subgroup.group-disabled {
     opacity: var(--disabled-opacity);
+    pointer-events: none; /* Prevent interaction with elements inside */
 }
+
 .eq-group.group-disabled .group-title,
-.effect-subgroup.group-disabled .group-title,
-.eq-panel.group-disabled > h2,
-.effects-panel .effect-subgroup.group-disabled .group-title {
+.effect-subgroup.group-disabled .effect-title-toggle .group-title, /* Target title inside toggle */
+.eq-panel.group-disabled > h2 /* Target main panel H2 if needed */
+{
     color: var(--disabled-text-color) !important;
     border-color: var(--disabled-text-color) !important;
 }
 
 
+/* Preset Selector Specific Styles */
+.actions .preset-selector-wrapper {
+  min-width: 160px; /* Give it some base width */
+  flex-grow: 1; /* Allow it to grow */
+  max-width: 250px; /* Prevent it from getting too wide */
+}
+
+#presetSelect {
+  /* Inherits base select styles */
+  height: 40px; /* Match button height */
+  font-weight: 500; /* Match button text */
+  margin-top: 0; /* Reset margin-top from base select rule */
+  /* Specific adjustments if needed */
+}
+
 @media (max-width: 1050px) {
-    /* Grid en .container es responsivo */
+    /* Grid in .container is responsive */
 }
 
 @media (max-width: 768px) {
@@ -635,12 +656,13 @@ input[type="range"]:disabled::-moz-range-thumb {
   }
   body {
     padding: 15px;
-    padding-top: 260px;
+    /* Adjust padding-top dynamically based on actual height if needed, */
+    /* or increase fixed value */
+    padding-top: 280px; /* Increased potential height */
     line-height: 1.55;
   }
   #top-fixed-area {
     padding: 10px 15px;
-    padding-top: 10px;
     gap: 10px;
   }
   #oscilloscope-status-container {
@@ -651,8 +673,8 @@ input[type="range"]:disabled::-moz-range-thumb {
     max-width: 100%;
     height: 60px;
     order: 1;
-    flex-basis: auto; /* Reset flex-basis */
-    min-width: auto; /* Allow shrinking further */
+    flex-basis: auto;
+    min-width: auto;
   }
   #statusMessage {
     min-height: 50px;
@@ -661,6 +683,7 @@ input[type="range"]:disabled::-moz-range-thumb {
     flex-basis: auto;
     order: 2;
     font-size: 1rem;
+    align-items: center; /* Center blinking cursor */
   }
   #statusHistory {
     min-height: 50px;
@@ -669,22 +692,45 @@ input[type="range"]:disabled::-moz-range-thumb {
     flex-basis: auto;
     order: 3;
     font-size: 0.8rem;
-    flex-direction: column; /* Para que el texto no se invierta en modo columna */
+    flex-direction: column-reverse; /* Keep reverse order */
   }
   #statusHistory div {
-      text-align: left;
+      text-align: left; /* Align text left within history */
+  }
+
+  .actions {
+      gap: 6px; /* Slightly reduce gap */
   }
 
   .actions button {
-    padding: 8px 12px;
+    padding: 8px 10px; /* Smaller padding */
     font-size: 0.85rem;
+    height: 36px; /* Adjust height */
+    gap: 6px; /* Reduce gap in button */
   }
   .actions button .button-text {
-    display: none;
+    display: none; /* Hide text on small screens */
   }
    .actions button svg {
-    margin-right: 0;
+    margin-right: 0; /* Remove margin when text hidden */
   }
+
+  /* Preset selector on small screens */
+  .actions .preset-selector-wrapper {
+     min-width: 100px; /* Smaller min-width */
+     max-width: 150px; /* Smaller max-width */
+     flex-grow: 0; /* Don't let it grow too much */
+  }
+  #presetSelect {
+    height: 36px; /* Match button height */
+    font-size: 0.85rem;
+    padding: 8px 10px; /* Match button padding */
+    padding-right: 25px; /* Ensure space for arrow */
+    background-size: .6em auto; /* Adjust arrow size */
+    background-position: right 8px center; /* Adjust arrow pos */
+  }
+
+
   .panel {
     padding: 15px;
   }
@@ -698,13 +744,15 @@ input[type="range"]:disabled::-moz-range-thumb {
     margin-bottom: 20px;
   }
   label { font-size: 0.85rem; }
-  label > span.value-display { font-size: 0.78rem; }
-  select { font-size: 0.85rem; }
+  label > span.value-display { font-size: 0.78rem; padding: 2px 6px;}
+  select { font-size: 0.85rem; padding: 8px 10px; padding-right: 25px; } /* Adjust selects too */
+  input[type="range"]::-webkit-slider-thumb { width: 16px; height: 16px; border-width: 2px;}
+  input[type="range"]::-moz-range-thumb { width: 16px; height: 16px; border-width: 2px;}
 }
 
 @media (max-width: 480px) {
   body {
-    padding-top: 280px;
+    padding-top: 300px; /* Potentially even more space needed */
   }
   #top-fixed-area {
     padding: 8px 10px;
@@ -723,13 +771,35 @@ input[type="range"]:disabled::-moz-range-thumb {
     max-height: 60px;
   }
   .actions button {
-    padding: 8px 10px;
-    gap: 5px;
+    padding: 6px 8px;
+    height: 32px;
+    gap: 4px;
   }
+  .actions button svg { width: 16px; height: 16px; }
+
+   #presetSelect {
+     height: 32px; /* Match button height */
+     font-size: 0.8rem;
+     padding: 6px 8px;
+     padding-right: 20px;
+     background-position: right 6px center;
+     background-size: .55em auto;
+   }
+   .actions .preset-selector-wrapper {
+       min-width: 80px;
+       max-width: 120px;
+   }
+
+
    h1.main-title {
     font-size: 1.4rem;
   }
   .panel h2 {
     font-size: 1.1rem;
   }
+  label { font-size: 0.8rem; }
+  label > span.value-display { font-size: 0.75rem; }
+  select { font-size: 0.8rem; }
+  input[type="range"]::-webkit-slider-thumb { width: 14px; height: 14px; }
+  input[type="range"]::-moz-range-thumb { width: 14px; height: 14px; }
 }
