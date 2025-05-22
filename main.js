@@ -141,7 +141,7 @@ function resetToInitialValues() {
 async function loadAndPopulatePresets() {
     try {
         const response = await fetch('presets.json');
-        if (!response.ok) {
+        if (!response.ok && response.status !== 404) { // Controlar error 404 (no encontrado)
             throw new Error(`HTTP error! status: ${response.status}`);
         }
         loadedPresets = await response.json();
@@ -160,9 +160,14 @@ async function loadAndPopulatePresets() {
         // addMessageToHistory("Presets listos."); // Opcional
 
     } catch (error) {
-        console.error("Error al cargar presets.json:", error);
-        statusMessage.textContent = "Error cargando presets.";
-        addMessageToHistory("Fallo al cargar presets predefinidos.");
+        if (error.message.includes('404')) {
+            console.warn("presets.json no encontrado, continuando sin presets predefinidos.");
+            addMessageToHistory("presets.json no encontrado.");
+                    } else {
+            console.error("Error al cargar presets.json:", error);
+            statusMessage.textContent = "Error cargando presets.";
+            addMessageToHistory("Fallo al cargar presets predefinidos.");
+        }
         presetSelect.disabled = true;
         presetSelect.title = "Error al cargar presets";
     }
